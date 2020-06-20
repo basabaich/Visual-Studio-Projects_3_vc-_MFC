@@ -1,0 +1,262 @@
+
+// DataTest3View.cpp : implementation of the CDataTest3View class
+//
+
+#include "stdafx.h"
+// SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
+// and search filter handlers and allows sharing of document code with that project.
+#ifndef SHARED_HANDLERS
+#include "DataTest3.h"
+#endif
+
+#include "DataTest3Set.h"
+#include "DataTest3Doc.h"
+#include "DataTest3View.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
+// CDataTest3View
+
+IMPLEMENT_DYNCREATE(CDataTest3View, CRecordView)
+
+BEGIN_MESSAGE_MAP(CDataTest3View, CRecordView)
+	ON_COMMAND(ID_RECORD_ADDRECORD, &CDataTest3View::OnRecordAddrecord)
+	ON_BN_CLICKED(IDC_ADDNEW, &CDataTest3View::OnClickedAddnew)
+	ON_BN_CLICKED(IDC_TOTALSALES, &CDataTest3View::OnBnClickedTotalsales)
+	ON_COMMAND(ID_RECORD_PREV, &CDataTest3View::OnRecordPrev)
+	ON_COMMAND(ID_RECORD_NEXT, &CDataTest3View::OnRecordNext)
+	ON_COMMAND(ID_RECORD_FIRST, &CDataTest3View::OnRecordFirst)
+	ON_COMMAND(ID_RECORD_LAST, &CDataTest3View::OnRecordLast)
+END_MESSAGE_MAP()
+
+// CDataTest3View construction/destruction
+
+CDataTest3View::CDataTest3View()
+	: CRecordView(IDD_DATATEST3_FORM)
+	, m_lTotalVal(0)
+	
+{
+	m_pSet = NULL;
+	// TODO: add construction code here
+
+}
+
+CDataTest3View::~CDataTest3View()
+{
+}
+
+void CDataTest3View::DoDataExchange(CDataExchange* pDX)
+{
+	CRecordView::DoDataExchange(pDX);
+	// you can insert DDX_Field* functions here to 'connect' your controls to the database fields, ex.
+	// DDX_FieldText(pDX, IDC_MYEDITBOX, m_pSet->m_szColumn1, m_pSet);
+	// DDX_FieldCheck(pDX, IDC_MYCHECKBOX, m_pSet->m_bColumn2, m_pSet);
+	// See MSDN and ODBC samples for more information
+	DDX_FieldText(pDX, IDC_WHOBUYER, m_pSet->m_WhoBuyer, m_pSet);
+	DDX_FieldText(pDX, IDC_WHATTYPE, m_pSet->m_WhatType, m_pSet);
+	DDX_FieldText(pDX, IDC_HOWMANY, m_pSet->m_HowMany, m_pSet);
+	DDX_FieldText(pDX, IDC_WHATTIME, m_pSet->m_WhatTime, m_pSet);
+	DDX_FieldText(pDX, IDC_BUYERTYPE, m_pSet->m_BuyerType, m_pSet);
+	DDX_FieldText(pDX, IDC_EACHVALUE, m_pSet->m_EachValue, m_pSet);
+	DDX_FieldText(pDX, IDC_TOTALVALUE, m_pSet->m_ToTalVal, m_pSet);
+	DDX_FieldText(pDX, IDC_ID, m_pSet->m_ID, m_pSet);
+
+	DDX_Text(pDX, IDC_EDIT3, m_lTotalVal);
+	//  DDX_Text(pDX, IDC_WHOBUYER, m_strText);
+}
+
+BOOL CDataTest3View::PreCreateWindow(CREATESTRUCT& cs)
+{
+	// TODO: Modify the Window class or styles here by modifying
+	//  the CREATESTRUCT cs
+
+	return CRecordView::PreCreateWindow(cs);
+}
+
+void CDataTest3View::OnInitialUpdate()
+{
+	m_pSet = &GetDocument()->m_DataTest3Set;
+	CRecordView::OnInitialUpdate();
+
+}
+
+
+// CDataTest3View diagnostics
+
+#ifdef _DEBUG
+void CDataTest3View::AssertValid() const
+{
+	CRecordView::AssertValid();
+}
+
+void CDataTest3View::Dump(CDumpContext& dc) const
+{
+	CRecordView::Dump(dc);
+}
+
+CDataTest3Doc* CDataTest3View::GetDocument() const // non-debug version is inline
+{
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CDataTest3Doc)));
+	return (CDataTest3Doc*)m_pDocument;
+}
+#endif //_DEBUG
+
+
+// CDataTest3View database support
+CRecordset* CDataTest3View::OnGetRecordset()
+{
+	return m_pSet;
+}
+
+
+
+// CDataTest3View message handlers
+
+
+void CDataTest3View::OnRecordAddrecord()
+{
+	// TODO: Add your command handler code here
+	//get a pointer to the record set
+	
+	
+	//make sure that any change to the current 
+	//record has been saved
+	//if (pSet->CanUpdate() && !pSet->IsDeleted())
+	//{
+		//pSet->Edit();
+		//if (!UpdateData())
+			//return;
+
+		//pSet->Update();
+	//}
+
+	//now get the ID for the new record
+	
+	
+
+	//m_WhoBuyer = NULL();
+	CString m_cstrNewStr = NULL;
+	//long m_lNewEntry = NULL;
+	
+	//save the new record
+	if (m_cstrNewStr == m_pSet->GetDataString() /*|| m_lNewEntry == m_pSet->GetDataString()*/)
+	{
+		AfxMessageBox(_T("please enter to save data !!"), MB_HELP);
+	}
+	else
+	{
+		CRecordset* pSet = OnGetRecordset();
+		long m_lNewID = m_pSet->GetMaxID() + 1;
+		//add the new record
+		m_pSet->AddNew();
+		//set the ID in new record
+		m_pSet->m_ID = m_lNewID;
+		//save the new record
+		m_pSet->Update();
+		//refresh the record set
+	//	m_pSet->Requery();
+		//move to the new record
+		m_pSet->MoveLast();
+		//update the form
+		UpdateData(FALSE);
+
+	}
+		
+	
+
+}
+
+
+void CDataTest3View::OnClickedAddnew()
+{
+	// TODO: Add your control notification handler code here
+	// TODO: Add your command handler code here
+	//get a pointer to the record set
+	CRecordset* pSet = OnGetRecordset();
+	//make sure that any change to the current 
+	//record has been saved
+	if (pSet->CanUpdate() && !pSet->IsDeleted())
+	{
+		pSet->Edit();
+		if (!UpdateData())
+			return;
+
+		pSet->Update();
+	}
+
+	//now get the ID for the new record
+	long m_lNewID = m_pSet->GetMaxID() + 1;
+	//add the new record
+	m_pSet->AddNew();
+	//set the ID in new record
+	m_pSet->m_ID = m_lNewID;
+	//save the new record
+	m_pSet->Update();
+	//refresh the record set
+	m_pSet->Requery();
+	//move to the new record
+	m_pSet->MoveLast();
+	//update the form
+	UpdateData(FALSE);
+}
+
+
+void CDataTest3View::OnBnClickedTotalsales()
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+
+void CDataTest3View::OnRecordPrev()
+{
+	// TODO: Add your command handler code here
+	if (!m_pSet->IsBOF())
+	{
+		m_pSet->MovePrev();
+	}
+	//update the form
+	UpdateData(FALSE);
+
+}
+
+
+void CDataTest3View::OnRecordNext()
+{
+	// TODO: Add your command handler code here
+	if (!m_pSet->IsEOF())
+	{
+		m_pSet->MoveNext();
+		//update the form
+		UpdateData(FALSE);
+	}
+	
+}
+
+
+void CDataTest3View::OnRecordFirst()
+{
+	// TODO: Add your command handler code here
+	
+	if (!m_pSet->IsBOF())
+	{
+		m_pSet->MoveFirst();
+	}
+	//update the form
+	UpdateData(FALSE);
+}
+
+
+void CDataTest3View::OnRecordLast()
+{
+	// TODO: Add your command handler code here
+	if (!m_pSet->IsEOF())
+	{
+		m_pSet->MoveLast();
+	}
+	//update the form
+	UpdateData(FALSE);
+}
