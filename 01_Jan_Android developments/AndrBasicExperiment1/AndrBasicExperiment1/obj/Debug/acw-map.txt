@@ -1,0 +1,4 @@
+AndrBasicExperiment1.MainActivity, AndrBasicExperiment1;md54a1196d63b32550ce2599478371599fb.MainActivity
+AndrBasicExperiment1.MainActivity, AndrBasicExperiment1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md54a1196d63b32550ce2599478371599fb.MainActivity
+AndrBasicExperiment1.MainActivity;md54a1196d63b32550ce2599478371599fb.MainActivity
+andrbasicexperiment1.MainActivity;md54a1196d63b32550ce2599478371599fb.MainActivity
